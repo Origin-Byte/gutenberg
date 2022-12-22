@@ -26,6 +26,5 @@ jobs:
 
       - name: Run test for all modules
         run: |
-          find . -name "Move.toml" |
-          while read PACKAGE; do ./sui move test -p $PACKAGE; done
+          ./sui test
 
