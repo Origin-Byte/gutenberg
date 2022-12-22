@@ -24,5 +24,5 @@ jobs:
 
       - name: Run test for all modules
         run: |
-          ./sui test -p ./examples/packages
+          ./sui move test -p ./examples/packages
 
