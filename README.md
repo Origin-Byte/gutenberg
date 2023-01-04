@@ -29,7 +29,7 @@ Collection:
   url:
 
 Launchpad:
-  admin: 
+  admin:
   receiver:
 
 Slots:
@@ -130,7 +130,7 @@ This will use a configuration file, `suimarines.yaml`, and write a Move package 
 To define a custom configuration and output path one can run the following command:
 
 ```shell
-gutenberg ./examples/suimarines.yaml --output suimarines.yaml
+gutenberg ./examples/suimarines.yaml --output suimarines.move
 ```
 
 You can obtain a `gutenberg` executable by building it using [cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html) and running the following commands, or using `cargo run` directly:

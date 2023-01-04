@@ -10,7 +10,7 @@ module gutenberg::{module_name} {{
     use nft_protocol::tags;
     use nft_protocol::royalty;
     use nft_protocol::display;
-    use nft_protocol::attribution;
+    use nft_protocol::creators;
     use nft_protocol::inventory::{{Self, Inventory}};
     use nft_protocol::royalties::{{Self, TradePayment}};
     use nft_protocol::collection::{{Self, Collection, MintCap}};
@@ -32,7 +32,7 @@ module gutenberg::{module_name} {{
         collection::add_domain(
             &mut collection,
             &mut mint_cap,
-            attribution::from_address(tx_context::sender(ctx))
+            creators::from_address(tx_context::sender(ctx))
         );
 
         // Register custom domains
@@ -65,7 +65,7 @@ module gutenberg::{module_name} {{
         {tags}
 {init_launchpad}{init_slots}{share_launchpad}
         transfer::transfer(mint_cap, tx_context::sender(ctx));
-        collection::share<{witness}>(collection);
+        transfer::share_object(collection);
     }}
 
     /// Calculates and transfers royalties to the `RoyaltyDomain`
@@ -116,6 +116,6 @@ module gutenberg::{module_name} {{
             ctx,
         );
 
-        inventory::add_nft(inventory, nft);
+        inventory::deposit_nft(inventory, nft);
     }}
 }}

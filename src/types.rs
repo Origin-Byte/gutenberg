@@ -118,10 +118,9 @@ impl Launchpad {
     pub fn init(&self) -> String {
         format!(
             "
-        let launchpad = nft_protocol::launchpad::new(
+        let marketplace = nft_protocol::marketplace::new(
             {admin},
             {receiver},
-            false,
             nft_protocol::flat_fee::new(0, ctx),
             ctx,
         );
@@ -133,7 +132,7 @@ impl Launchpad {
 
     pub fn share(&self) -> String {
         "
-        transfer::share_object(launchpad);
+        transfer::share_object(marketplace);
 "
         .to_string()
     }
@@ -154,8 +153,7 @@ impl Slot {
 
         string.push_str(&format!(
             "
-        let slot = nft_protocol::slot::new(
-            &launchpad,
+        let listing = nft_protocol::listing::new(
             {admin},
             {receiver},
             ctx,
@@ -176,7 +174,7 @@ impl Slot {
 
     fn share(&self) -> &'static str {
         "
-        transfer::share_object(slot);
+        transfer::share_object(listing);
 "
     }
 }
@@ -220,8 +218,12 @@ impl Market {
                 is_whitelisted,
             } => format!(
                 "
-        nft_protocol::fixed_price::init_market<{token}>(
-            &mut slot,
+        let inventory_id =
+            nft_protocol::listing::create_inventory(&mut listing, ctx);
+
+        nft_protocol::fixed_price::create_market_on_listing<{token}>(
+            &mut listing,
+            inventory_id,
             {is_whitelisted},
             {price},
             ctx,
@@ -234,8 +236,12 @@ impl Market {
                 is_whitelisted,
             } => format!(
                 "
-        nft_protocol::dutch_auction::init_market<{token}>(
-            &mut slot,
+        let inventory_id =
+            nft_protocol::listing::create_inventory(&mut listing, ctx);
+
+        nft_protocol::dutch_auction::create_market_on_listing<{token}>(
+            &mut listing,
+            inventory_id,
             {is_whitelisted},
             {reserve_price},
             ctx,
