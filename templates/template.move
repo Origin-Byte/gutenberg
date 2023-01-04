@@ -63,7 +63,7 @@ module gutenberg::{module_name} {{
         royalty::add_royalty_domain(&mut collection, &mut mint_cap, royalty);
 
         {tags}
-{init_launchpad}{init_slots}{share_launchpad}
+{init_marketplace}{init_listings}{share_marketplace}
         transfer::transfer(mint_cap, tx_context::sender(ctx));
         transfer::share_object(collection);
     }}

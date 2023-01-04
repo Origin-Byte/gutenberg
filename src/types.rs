@@ -68,8 +68,7 @@ impl NftType {
                     attribute_keys: vector<String>,
                     attribute_values: vector<String>,
                     mint_cap: &mut MintCap<{witness}>,
-                    slot: &mut Slot,
-                    market_id: ID,
+                    inventory: &mut Inventory,
                     ctx: &mut TxContext,
                 ) {{
                     let nft = nft::new<{witness}>(tx_context::sender(ctx), ctx);
@@ -96,7 +95,7 @@ impl NftType {
                         ctx,
                     );
 
-                    slot::add_nft(slot, market_id, nft, ctx);
+                    inventory::deposit_nft(inventory, nft);
                 }}",
                 witness = witness,
             ),
@@ -105,16 +104,16 @@ impl NftType {
     }
 }
 
-/// Contains the market configurations of the launchpad
+/// Contains the market configurations of the marketplace
 #[derive(Debug, Deserialize)]
-pub struct Launchpad {
+pub struct Marketplace {
     #[serde(default = "default_admin")]
     admin: String,
     #[serde(default = "default_admin")]
     receiver: String,
 }
 
-impl Launchpad {
+impl Marketplace {
     pub fn init(&self) -> String {
         format!(
             "
@@ -139,7 +138,7 @@ impl Launchpad {
 }
 
 #[derive(Debug, Deserialize)]
-pub struct Slot {
+pub struct Listing {
     #[serde(default = "default_admin")]
     admin: String,
     #[serde(default = "default_admin")]
@@ -147,7 +146,7 @@ pub struct Slot {
     markets: Vec<Market>,
 }
 
-impl Slot {
+impl Listing {
     pub fn init(&self) -> String {
         let mut string = String::new();
 
